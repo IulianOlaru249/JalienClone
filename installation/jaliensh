@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "$1" == "login" ]; then
+
+
+        cd $JALIEN_HOME
+        ./run.sh alien.APIService $@
+
+else 
+
+
+	cd $JALIEN_HOME
+	./run.sh alien.JAliEnSh $@
+
+
+fi
+
+
+
+

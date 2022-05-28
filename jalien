@@ -1,0 +1,79 @@
+#!/bin/bash
+
+if [[ -z "${JALIEN_HOME}" ]]; then
+  ## find the location of jalien script
+  SOURCE="${BASH_SOURCE[0]}"
+  while [ -h "${SOURCE}" ]; do ## resolve $SOURCE until the file is no longer a symlink
+    JALIEN_HOME="$( cd -P "$(dirname "${SOURCE}" )" && pwd )" ##"
+    SOURCE="$(readlink "${SOURCE}")" ##"
+    [[ "${SOURCE}" != /* ]] && SOURCE="${JALIEN_HOME}/${SOURCE}" ## if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  done
+  JALIEN_HOME="$(cd -P "$( dirname "${SOURCE}" )" && pwd)" ##"
+  export JALIEN_HOME
+fi
+
+# if not defined use default .j/config
+JALIEN_CONF_DIR=${JALIEN_CONF_DIR:-${HOME}/.j/config}
+if [ ! -d "${JALIEN_CONF_DIR}" ]; then # ups, setup was not run, so lets use the defaults from JALIEN_HOME
+    JALIEN_CONF_DIR="${JALIEN_HOME}/config"
+fi
+
+RUNSH="${JALIEN_HOME}/run.sh"
+
+if [ "$1" == "setup" ]; then
+    mkdir -p ${HOME}/.j/config
+
+    #Copy the default logging and config files to user controllable versions - if present, make backup
+    cp --backup -S "_$(date +%Y%m%d_%H%M%S)" ${JALIEN_HOME}/config/logging.properties ${JALIEN_HOME}/config/config.properties ${HOME}/.j/config/
+
+    #mkdir -p ${HOME}/.j/trusts
+    #wget -q "https://cafiles.cern.ch/cafiles/certificates/CERN%20Certification%20Authority.crt" -O ${HOME}/.j/trusts/CERN_CA.der
+    #wget -q "https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt" -O ${HOME}/.j/trusts/CERN_ROOT_CA2.der
+    #wget -q "https://cafiles.cern.ch/cafiles/certificates/CERN%20Grid%20Certification%20Authority.crt" -O ${HOME}/.j/trusts/CERN_Grid_CA.der
+
+    if [ ! -f "$HOME/.globus/userkey.pem" -o ! -f "$HOME/.globus/usercert.pem" ]; then
+      echo "Your Grid user certificate should be stored in $HOME/.globus/{usercert,userkey}.pem"
+      exit 1
+    fi
+
+    chmod 400 ${HOME}/.globus/userkey.pem
+    chmod 440 ${HOME}/.globus/usercert.pem
+    exit 0 # we done our job, let's exit
+
+elif [ "$1" == "login" ]; then
+    shift
+    RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR}"
+    ENTRYPOINT="alien.JBox"
+elif [ "$1" == "JobAgent" ]; then
+    shift
+    #RUNSH_OPTS="-Djavax.net.debug=ssl -DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true alien.site.JobAgent"
+    #RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true alien.site.JobAgent"
+    RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true"
+    ENTRYPOINT="alien.site.JobAgent"
+
+elif [ "$1" == "ComputingElement" ]; then
+    shift
+    RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true"
+    ENTRYPOINT="alien.site.ComputingElement"
+
+elif [ "$1" == "TitanJobService" ]; then
+    shift
+    #RUNSH_OPTS="-Djavax.net.debug=ssl -DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true alien.site.JobAgent"
+    #RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true alien.site.JobAgent"
+    RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true"
+    ENTRYPOINT="alien.site.TitanJobService"
+
+elif [ "$1" == "ArchiveMemberDelete" ]; then
+    shift
+    RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR} -Djava.net.preferIPv4Stack=true"
+    ENTRYPOINT="alien.ArchiveMemberDelete"
+
+else
+    RUNSH_OPTS="-DAliEnConfig=${JALIEN_CONF_DIR}"
+    ENTRYPOINT="alien.JSh"
+fi
+
+[[ -n "${JALIEN_OPTS}" ]] && RUNSH_OPTS="${RUNSH_OPTS} ${JALIEN_OPTS}"
+
+# use the selected options with RUNSH script
+${RUNSH} "${RUNSH_OPTS}" "${ENTRYPOINT}" "$@"

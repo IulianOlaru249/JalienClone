@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+if [ "$1" == "up" ]; then
+
+	cd ~/alien-java/trunk/src
+	svn up
+
+	cd ~/alien-java/trunk
+
+	./compile.sh
+
+elif [ "$1" == "kill" ]; then
+
+	kill -9 $(ps aux| grep 'java' | grep 'alien.CentralServices' | awk '{print $2}')
+
+
+elif [ "$1" == "start" ]; then
+
+	export ALIEN_ROOT=/opt/alien
+
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ALIEN_ROOT/api/lib/:$ALIEN_ROOT/lib
+
+	cd ~/alien-java/trunk
+	nohup ./run.sh alien.CentralServices > /dev/null 2>&1 &
+
+else
+
+	tail -F ~/alien-java/trunk/alien0.log
+
+fi
+
+
+

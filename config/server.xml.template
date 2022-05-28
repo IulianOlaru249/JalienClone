@@ -1,0 +1,70 @@
+<Server port="8005" shutdown="SHUTDOWN">
+  <!--Initialize Jasper prior to webapps are loaded. Documentation at /docs/jasper-howto.html -->
+  <Listener className="org.apache.catalina.core.JasperListener" />
+  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <!-- JMX Support for the Tomcat server. Documentation at /docs/non-existent.html -->
+  <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="off" />
+
+  <GlobalNamingResources>
+  </GlobalNamingResources>
+
+
+  <Service name="Catalina">
+    <Connector 
+        port="8080"
+        compression="on"
+        protocol="HTTP/1.1"
+        redirectPort="8443"
+        compressionMinSize="2048"
+        compressableMimeType="text/html,text/xml,text/plain"
+        maxThreads="100"
+        minSpareThreads="5"
+        maxSpareThreads="15"
+        enableLookups="false"
+        acceptCount="100"
+        connectionTimeout="10000"
+        disableUploadTimeout="true"
+        allowLinking="true"
+    />
+
+   <Connector 
+    sslProtocol='TLS'
+    SSLEnabled="true"
+    maxThreads='150'
+    maxSpareThreads='75'
+    secure='true'
+    protocol="org.apache.coyote.http11.Http11Protocol"
+    enableLookups='false'
+    sslCertFile='@PATHTO@/tomcat/conf/newcert.cer'
+    sslKey='@PATHTO@/tomcat/conf/privkey.pem'
+    sslCAFiles='@ALIEN@/globus/share/certificates/*.0'
+    trustStoreDir="@ALIEN@/globus/share/certificates"
+    crlFiles='@ALIEN@/globus/share/certificates/*.crl_url'
+    crlUpdateInterval="2h"
+    crlEnabled="true"
+    crlRequired="true"
+    minSpareThreads='25'
+    disableUploadTimeout='true'
+    SSLImplementation='org.glite.security.trustmanager.tomcat.TMSSLImplementation'
+    acceptCount='100' 
+    clientAuth='true'
+    debug='0'
+    scheme='https'
+    port='8443' 
+    log4jConfFile='@PATHTO@/config/log4j-trustmanager.properties'/>
+
+    <Engine name="Catalina" defaultHost="localhost">
+      <Logger className="org.apache.catalina.logger.FileLogger" />
+
+      <Host name="localhost" appBase="webapps">
+	  <DefaultContext allowLinking="true"/>
+      </Host>
+
+      <Realm className="alien.user.LdapCertificateRealm" resourceName="UserDatabase" />
+    </Engine>
+  </Service>
+</Server>

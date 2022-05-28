@@ -1,0 +1,8 @@
+back
+
+Metadata
+	- basic find implemented in LFNUtils - costing - 2011-06-28
+
+Collections
+	- Delete entries from a collection
+		LFNUtils.removeFromCollection() - costing - 2011-06-27

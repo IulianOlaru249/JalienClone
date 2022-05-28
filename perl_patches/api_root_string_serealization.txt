@@ -1,0 +1,297 @@
+
+the command list from Andreas:
+
+listFilesFromCollection - do we really have this one???
+
+type,getdataset,
+
+
+
+
+-----------------------------------------------
+
+
+rm
+rmdir
+purge/erase
+
+submit
+kill (incl. "KillById")
+queue
+masterjob
+resubmit (incl. "ResubmitById")
+
+
+
+stage
+mirror
+
+
+fquota
+jquota 
+
+
+removeTag
+removeTagValue
+removeTrigger
+addTag
+addTagValue
+addTrigger
+showTags
+updateTagValue
+showAllTagValue
+showTagValue
+showTrigger
+
+debug
+packages
+partitions
+df
+who
+spy
+
+
+top?
+prepare
+isonline
+
+
+
+
+ctrl-L
+clear
+
+
+ROOT API:
+-----
+query
+locatesites
+Register
+KillById
+ResubmitById
+GetHomeDirectory
+GetJDLGenerator
+OpenCollection
+OpenCollectionQuery
+-----
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# stream special characters according to CODEC.h
+my $streamend       = chr 0;
+my $fieldseparator  = chr 1;
+my $fielddescriptor = chr 2;
+my $columnseparator = chr 3;
+my $stdoutindicator = chr 4;
+my $stderrindicator = chr 5;
+my $outputindicator = chr 6;
+my $outputterminator = chr 7;
+
+
+###############################################################
+aliensh:[alice] [1] /alice/cern.ch/user/s/sschrein/ >gbbox ls -la /alice
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    .                                 
+drwxr-xr-x   admin    admin               0 Aug 04 23:21    ..                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    /alice                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    bin                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    cern.ch                                 
+drwxr-xr-x   alidaq   alidaq              0 Dec 20 10:03    data                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    jdl                                 
+drwxr-xr-x   peters   z2                  0 Dec 20 10:03    macros                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    packages                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    production                                 
+drwxr-xr-x   admin    admin               0 Mar 31 14:12    QA                                 
+drwxr-xr-x   aliprod  z2                  0 Dec 20 10:03    sim                                 
+drwxr-xr-x   aliprod  z2                  0 Dec 20 10:03    simulation                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    tags                                 
+drwxr-xr-x   alidaq   admin               0 Mar 31 14:12    testdata                                 
+drwxr-xr-x   admin    admin               0 Dec 20 10:03    triggers                                 
+aliensh:[alice] [2] /alice/cern.ch/user/s/sschrein/ >gbbox -d ls -la /alice
+===============>Stream stdout
+  [Col 0]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    .                                 
+<
+  [Col 1]:    >drwxr-xr-x   admin    admin               0 Aug 04 23:21    ..                                 
+<
+  [Col 2]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    /alice                                 
+<
+  [Col 3]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    bin                                 
+<
+  [Col 4]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    cern.ch                                 
+<
+  [Col 5]:    >drwxr-xr-x   alidaq   alidaq              0 Dec 20 10:03    data                                 
+<
+  [Col 6]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    jdl                                 
+<
+  [Col 7]:    >drwxr-xr-x   peters   z2                  0 Dec 20 10:03    macros                                 
+<
+  [Col 8]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    packages                                 
+<
+  [Col 9]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    production                                 
+<
+  [Col 10]:    >drwxr-xr-x   admin    admin               0 Mar 31 14:12    QA                                 
+<
+  [Col 11]:    >drwxr-xr-x   aliprod  z2                  0 Dec 20 10:03    sim                                 
+<
+  [Col 12]:    >drwxr-xr-x   aliprod  z2                  0 Dec 20 10:03    simulation                                 
+<
+  [Col 13]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    tags                                 
+<
+  [Col 14]:    >drwxr-xr-x   alidaq   admin               0 Mar 31 14:12    testdata                                 
+<
+  [Col 15]:    >drwxr-xr-x   admin    admin               0 Dec 20 10:03    triggers                                 
+<
+
+===============>Stream stderr
+  [Col 0]:    ><
+
+===============>Stream result_structure
+  [Col 0]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >.<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 1]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Aug 04 23:21<
+    [Tag: name] => >..<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 2]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >/alice<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 3]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >bin<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 4]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >cern.ch<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 5]:    [Tag: group] => >alidaq<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >data<
+    [Tag: user] => >alidaq<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 6]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >jdl<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 7]:    [Tag: group] => >z2<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >macros<
+    [Tag: user] => >peters<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 8]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >packages<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 9]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >production<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 10]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Mar 31 14:12<
+    [Tag: name] => >QA<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 11]:    [Tag: group] => >z2<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >sim<
+    [Tag: user] => >aliprod<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 12]:    [Tag: group] => >z2<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >simulation<
+    [Tag: user] => >aliprod<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 13]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >tags<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 14]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Mar 31 14:12<
+    [Tag: name] => >testdata<
+    [Tag: user] => >alidaq<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+  [Col 15]:    [Tag: group] => >admin<
+    [Tag: permissions] => >drwxr-xr-x<
+    [Tag: date] => >Dec 20 10:03<
+    [Tag: name] => >triggers<
+    [Tag: user] => >admin<
+    [Tag: path] => >/alice/<
+    [Tag: md5] => ><
+    [Tag: size] => >0<
+
+===============>Stream misc_hash
+  [Col 0]:    [Tag: pwd] => >/alice/cern.ch/user/s/sschrein/<
+

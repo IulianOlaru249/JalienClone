@@ -1,0 +1,33 @@
+
+
+to use the test system...
+
+
+REQUIREMENTS:
+
+install on your machine:
+
+java sdk
+slapd
+mysql (server + client)
+
+
+run:
+	./testj help
+
+
+
+infos:
+
+- passwords for ldap+db can be found in the config directory, default should be 'pass'
+
+
+debugging:
+
+- if your slapd doesn't come up and show a config file error 
+  (will happen e.g. on newer ubuntu distributions like oneiric)
+  make sure your user is in the system's slapd group, e.g. 'openldap'.
+  then logout/login, try again.
+
+- if you don't get any db connection/lfns, check that your /etc/hosts knows both 'localhost' AND 'localhost.localdomain', or 
+  in any other case, check that the DB config entries make up sense with mysql -host X -P Y ...
