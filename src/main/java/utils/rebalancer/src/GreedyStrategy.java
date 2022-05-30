@@ -3,7 +3,6 @@ package utils.rebalancer.src;
 import utils.rebalancer.commons.Operation;
 import utils.rebalancer.commons.Pair;
 import utils.rebalancer.commons.StorageTuple;
-import utils.rebalancer.commons.StorageTupleMember;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,23 +41,23 @@ public class GreedyStrategy implements AlgoStrategy {
             int i = 0;
             for (StorageTuple source : sources) {
                 while( source.getCommonLFNNo() != 0 && i < destinations.size()) {
-                        /**/
-                        int requiredLFNs = Math.min(source.getCommonLFNNo(), Math.abs(destinations.get(i).getCommonLFNNo() - threshold));
+                    /**/
+                    int requiredLFNs = Math.min(source.getCommonLFNNo(), Math.abs(destinations.get(i).getCommonLFNNo() - threshold));
 
-                        /**/
-                        Operation ops = new Operation(null, null, 0.0, 0);
-                        System.out.println(ops);
-                        opsList.add(ops);
+                    /**/
+                    Operation ops = new Operation(null, null, 0.0, 0);
+                    System.out.println(ops);
+                    opsList.add(ops);
 
-                        /**/
-                        if (source.getCommonLFNNo() == 0) {
-                            tupleList.remove(source);
-                        }
+                    /**/
+                    if (source.getCommonLFNNo() == 0) {
+                        tupleList.remove(source);
+                    }
 
-                        if (destinations.get(i).getCommonLFNNo() >= threshold) {
-                            tupleList.remove(destinations.get(i));
-                            i++;
-                        }
+                    if (destinations.get(i).getCommonLFNNo() >= threshold) {
+                        tupleList.remove(destinations.get(i));
+                        i++;
+                    }
                 }
             }
 

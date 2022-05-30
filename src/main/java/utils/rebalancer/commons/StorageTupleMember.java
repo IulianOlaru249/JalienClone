@@ -110,4 +110,5 @@ public class StorageTupleMember extends SE {
                 ( (readDemotionWeight * this.demoteRead + distanceWeight * distance + writeDemotionWeight * targetSE.demoteWrite)
                 / (readDemotionWeight + distanceWeight + writeDemotionWeight) );
     }
+
 }
