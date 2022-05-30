@@ -1,8 +1,10 @@
 package utils.rebalancer.src;
 
+import utils.rebalancer.commons.Operation;
 import utils.rebalancer.commons.Pair;
 import utils.rebalancer.commons.StorageTuple;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,15 +51,15 @@ public interface AlgoStrategy {
      * @param tupleList
      * @return
      */
-//    default double getMean(List<StorageTuple> tupleList) {
-//
-//    }
+    default double getMeanLFNNo(List<StorageTuple> tupleList) {
+        return 0;
+    }
 
 
     /**
      * The abstract method that will be implemented by
      * Strategy subclasses.
      */
-    void doAlgorithm(Map<Pair<String, String>, Double> distances, List<StorageTuple> tupleList, int threshold);
+    List<Operation> doAlgorithm(Map<Pair<String, String>, Double> distances, List<StorageTuple> tupleList, int threshold);
 
 }

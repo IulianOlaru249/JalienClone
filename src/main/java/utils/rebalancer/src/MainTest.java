@@ -9,9 +9,9 @@ import java.util.*;
 public class MainTest {
     public static void main(String[] args) {
         //List<StorageTuple> seTuples = inputParser.
-        Map<Pair<String, String>, Double> distances = InputParser.getDistances("/home/nicu/Documents/Facultate/Licenta/jalien/src/main/java/utils/rebalancer/mock_dataset/seDistance.csv");
-        List<StorageTuple> seTuples = InputParser.getStorageElements("/home/nicu/Documents/Facultate/Licenta/jalien/src/main/java/utils/rebalancer/mock_dataset/whereis_cern2.csv",
-                                                                        "/home/nicu/Documents/Facultate/Licenta/jalien/src/main/java/utils/rebalancer/mock_dataset/seList_cern.csv");
+        Map<Pair<String, String>, Double> distances = InputParser.getDistances("/home/ghostpants/Documents/CERN/jalien/src/main/java/utils/rebalancer/mock_dataset/seDistance.csv");
+        List<StorageTuple> seTuples = InputParser.getStorageElements("/home/ghostpants/Documents/CERN/jalien/src/main/java/utils/rebalancer/mock_dataset/whereis_cern2.csv",
+                                                                        "home/ghostpants/Documents/CERN/jalien/src/main/java/utils/rebalancer/mock_dataset/seList_cern.csv");
 
         for(StorageTuple seTuple : seTuples) {
             System.out.println(seTuple.getSeMemberNames());
