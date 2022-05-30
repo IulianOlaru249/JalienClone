@@ -138,23 +138,28 @@ public class StorageTuple implements Comparable{
 
 
     /**
-     * Compute the cost of transferring LFNs between Tuples
      *
+     * @param seTuple
+     * @param ops
+     * @param lfnNoPerSE
      */
-//    public Double getOPSCost( StorageTupleMember targetSE, Map<Pair<String, String>, Double> distances,
-//                              int transferedLFNNo, boolean withWriteDemotion,
-//                              int readDemotionWeight, int distanceWeight, int writeDemotionWeight) {
-//        /**
-//         * The number of LFNs that will be moved is determined in the strategy.
-//         * Examples:
-//         *  (A,B) --2--> (B, D) ==(possible ways to transfer between SE members)==> (AB, BD), (AD, BB)
-//         *  (A, B, C) --9--> (D, E, F) ====> (AD, BE, CF), (AF, BE, CD), ...
-//         */
-//        return (double)0;
-//    }
+    public void transferLFNs(StorageTuple seTuple, List< Operation > opsList) {
+        for(Operation ops : opsList)
+            ops.getSource().transferPFNs(ops.getDestination(), ops.getTransferedLFNs());
+    }
 
-
-    public Pair<Double, List<Pair<StorageTupleMember, StorageTupleMember>>> getOPSCost( StorageTuple seTuple, Map<Pair<String, String>, Double> distances,
+    /**
+     *
+     * @param seTuple
+     * @param distances
+     * @param transferedLFNNo
+     * @param withWriteDemotion
+     * @param readDemotionWeight
+     * @param distanceWeight
+     * @param writeDemotionWeight
+     * @return
+     */
+    public List<Operation> getOPS( StorageTuple seTuple, Map<Pair<String, String>, Double> distances,
                               int transferedLFNNo, boolean withWriteDemotion,
                               int readDemotionWeight, int distanceWeight, int writeDemotionWeight) {
         /**
@@ -163,25 +168,36 @@ public class StorageTuple implements Comparable{
          *  (A,B) --2--> (B, D) ==(possible ways to transfer between SE members)==> (AB, BD), (AD, BB)
          *  (A, B, C) --9--> (D, E, F) ====> (AD, BE, CF), (AF, BE, CD), ...
          */
-        //TODO: IMPORTANT: Maybe use Operation class instead of Pair<StorageTupleMember, StorageTupleMember>
-        List<List<Pair<StorageTupleMember, StorageTupleMember>>> allCombinations = getAllCombinations(getSeMembers(), seTuple.getSeMembers());
-        double minCost = (double)Integer.MAX_VALUE;
-        List<Pair<StorageTupleMember, StorageTupleMember>> bestMatch = null;
 
-        for(List<Pair<StorageTupleMember, StorageTupleMember>> pairs : allCombinations) {
-            double costTotal = 0;
-            for(Pair<StorageTupleMember, StorageTupleMember> pair : pairs) {
-                StorageTupleMember source = pair.first;
-                StorageTupleMember destination = pair.second;
-                costTotal += source.getOPSCost(destination, distances, transferedLFNNo, withWriteDemotion,
-                                                readDemotionWeight, distanceWeight, writeDemotionWeight);
-            }
-            if(minCost > costTotal) {
-                minCost = costTotal;
-                bestMatch = pairs;
-            }
-        }
-        return Pair.of(minCost, bestMatch);
+        List<StorageTupleMember> sourceMembers = this.getSeMembers();
+        List<StorageTupleMember> destMembers = seTuple.getSeMembers();
+
+        List<List<Pair<StorageTupleMember, StorageTupleMember>>> allCombinations = getAllCombinations(sourceMembers, destMembers);
+        List<Operation> opsList = new ArrayList<>();
+
+//        double minCost = (double)Integer.MAX_VALUE;
+//        List<Pair<StorageTupleMember, StorageTupleMember>> bestMatch = null;
+//
+//        for(List<Pair<StorageTupleMember, StorageTupleMember>> pairs : allCombinations) {
+//            double totalCost = 0;
+//            for(Pair<StorageTupleMember, StorageTupleMember> pair : pairs) {
+//                StorageTupleMember source = pair.first;
+//                StorageTupleMember destination = pair.second;
+//                totalCost += source.getOPSCost(destination, distances, transferedLFNNo, withWriteDemotion,
+//                                                readDemotionWeight, distanceWeight, writeDemotionWeight);
+//            }
+//
+//            if(minCost > totalCost) {
+//                minCost = totalCost;
+//                bestMatch = pairs;
+//            }
+//        }
+
+//        for (Pair<StorageTupleMember, StorageTupleMember> pair : bestMatch) {
+//            opsList.add(new Operation( this, seTuple, pair.first, pair.second, minCost, transferedLFNNo));
+//        }
+
+        return opsList;
     }
 
     /**
