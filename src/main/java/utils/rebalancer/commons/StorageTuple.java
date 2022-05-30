@@ -14,7 +14,7 @@ import java.util.Map;
  * @author -
  * @since -
  */
-public class StorageTuple {
+public class StorageTuple implements Comparable {
     /**
      * Counters for the common LFN pool and for the number of SEs
      */
@@ -37,9 +37,17 @@ public class StorageTuple {
         this.sesNo ++;
     }
 
+    /**
+     *
+     * @param newLfn
+     */
     public void addCommonLfn(String newLfn) {
         this.LFNs.add(newLfn);
         this.commonLFNNo++;
+    }
+
+    public int getCommonLFNNo() {
+        return this.commonLFNNo;
     }
 
     /**
@@ -71,6 +79,7 @@ public class StorageTuple {
     }
 
 
+
     /**
      * Compute the cost of transferring LFNs between Tuples
      *
@@ -86,7 +95,25 @@ public class StorageTuple {
     public Double getOPSCost( StorageTupleMember targetSE, Map<Pair<String, String>, Double> distances,
                               int transferedLFNNo, boolean withWriteDemotion,
                               int readDemotionWeight, int distanceWeight, int writeDemotionWeight) {
-        //TODO: get all combinations
+
+        /**
+         * The number of LFNs that will be moved is determined in the strategy.
+         * Examples:
+         *  (A,B) --2--> (B, D) ==(possible ways to transfer between SE members)==> (AB, BD), (AD, BB)
+         *  (A, B, C) --9--> (D, E, F) ====> (AD, BE, CF), (AF, BE, CD), ...
+         */
+
         return (double)0;
+    }
+
+    /**
+     *
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Object o) {
+        return this.getCommonLFNNo() - ((StorageTuple)o).getCommonLFNNo();
+
     }
 }
