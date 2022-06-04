@@ -51,7 +51,13 @@ public interface AlgoStrategy {
      * @return
      */
     default double getMeanLFNNo(List<StorageTuple> tupleList) {
-        return 0;
+        double mean = 0;
+
+        for (StorageTuple st : tupleList) {
+            mean += st.getCommonLFNNo();
+        }
+
+        return mean / tupleList.size();
     }
 
 

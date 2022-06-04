@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BruteForceStrategy implements AlgoStrategy{
+public class BruteForceStrategy implements AlgoStrategy {
     @Override
     public List<Operation> doAlgorithm(Map<Pair<String, String>, Double> distances, List<StorageTuple> tupleList, int threshold) {
         int replicationFactor = tupleList.get(0).getReplicationFactor();
@@ -30,7 +30,7 @@ public class BruteForceStrategy implements AlgoStrategy{
             /**
              * Cheapest sequence of operations (moves) between 2 StorageTuple elements.
              */
-            List<Pair<StorageTupleMember, StorageTupleMember>> cheapestOps = null;
+            List<Operation> cheapestOps = null;
 
             int transferredLFNs = 0;
             StorageTuple destination = null;
@@ -65,16 +65,21 @@ public class BruteForceStrategy implements AlgoStrategy{
                  * Common LFN number is always divisible with replication factor
                  * Compute cost based on how many files per SE we transfer
                  */
-                Pair<Double, List<Pair<StorageTupleMember, StorageTupleMember>>> opsEliminate = targetSeTuple.getOPSCost(seTuple,
-                        distances, targetSeTuple.getCommonLFNNo(), true, 1, 8, 1);
-                Pair<Double, List<Pair<StorageTupleMember, StorageTupleMember>>> opsAdd = seTuple.getOPSCost(targetSeTuple, distances, requiredLFNNo,
-                        true, 1, 8, 1);
+                List<Operation> opsEliminate = targetSeTuple.getOPS(seTuple, distances,  targetSeTuple.getCommonLFNNo(), true, 1, 8, 1);
+                List<Operation> opsAdd = seTuple.getOPS(targetSeTuple, distances, requiredLFNNo, true, 1, 8, 1);
+
 
                 /**
                  * Cost of chosen operations
                  */
-                double costOpsEliminate = opsEliminate.first;
-                double costOpsAdd = opsAdd.first;
+                double costOpsEliminate = 0;
+                double costOpsAdd = 0;
+                for (Operation ops : opsEliminate) {
+                    costOpsEliminate += ops.getCost();
+                }
+                for (Operation ops : opsAdd) {
+                    costOpsAdd += ops.getCost();
+                }
 
                 /**
                  * If number of common LFNs on seTuple reached the threshold you can't move any files from it.
@@ -109,27 +114,19 @@ public class BruteForceStrategy implements AlgoStrategy{
                         transferredLFNs = targetSeTuple.getCommonLFNNo();
                         source = targetSeTuple;
                         destination = seTuple;
-                        cheapestOps = opsEliminate.second;
+                        cheapestOps = opsEliminate;
                         cheapestOpsCost = costOpsEliminate;
                     } else {
                         transferredLFNs = requiredLFNNo;
                         source = seTuple;
                         destination = targetSeTuple;
-                        cheapestOps = opsAdd.second;
+                        cheapestOps = opsAdd;
                         cheapestOpsCost = costOpsAdd;
                     }
                 }
             }
             if(opsPossible) {
-                //TODO: Append operations to the list.
-                //operationList.add()
-
-                System.out.println(source.getSeMemberNames() + " --" + (transferredLFNs * replicationFactor) + "-->" + destination.getSeMemberNames());
-                for(Pair<StorageTupleMember, StorageTupleMember> ops : cheapestOps) {
-                    System.out.println("       " + ops.first.getName() + " --" + transferredLFNs + "-->" + ops.second.getName());
-                }
-
-                //source.transferLFNs(destination, cheapest_ops, transferred_lfns)
+                operationList.addAll(cheapestOps);
             }
         }
 

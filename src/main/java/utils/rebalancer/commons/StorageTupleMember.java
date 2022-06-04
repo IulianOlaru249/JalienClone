@@ -23,7 +23,7 @@ public class StorageTupleMember extends SE {
     private List<String> PFNs = new ArrayList<>();
 
     /**
-     * Build an arbitrary SE from the corresponding fields
+     * Build an arbitrary SE from the corresponding fields    \item Let \textbf{TH}: [N] be the threshold that all STs mush reach.
      *
      * @param seName
      * @param seNumber
@@ -54,12 +54,13 @@ public class StorageTupleMember extends SE {
 
 
     /**
-     * TODO!
+     *
      * @param targetSE
+     * @param pfnNo
      */
-    public void transferPFNs(StorageTupleMember targetSE) {
-        this.numberOfPFNs --;
-        targetSE.numberOfPFNs ++;
+    public void transferPFNs(StorageTupleMember targetSE, int pfnNo) {
+        this.numberOfPFNs -= pfnNo;
+        targetSE.numberOfPFNs += pfnNo;
     }
 
     /**
