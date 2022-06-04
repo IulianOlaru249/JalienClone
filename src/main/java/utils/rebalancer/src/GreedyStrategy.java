@@ -21,7 +21,7 @@ public class GreedyStrategy implements AlgoStrategy {
 
         /* Keep reiterating as long as not all tuples have been balanced */
         while( tupleList.size() > 1) {
-            int meanLFNNo = (int)this.getMeanLFNNo(tupleList);
+            double meanLFNNo = this.getMeanLFNNo(tupleList);
 
             /**
              *  Separate the storage tuples in sources and destinations basted on the
@@ -35,7 +35,7 @@ public class GreedyStrategy implements AlgoStrategy {
 
             List<StorageTuple> sources = tupleList
                     .stream()
-                    .filter(c -> c.getCommonLFNNo() > meanLFNNo)
+                    .filter(c -> c.getCommonLFNNo() <= meanLFNNo)
                     .collect(Collectors.toList());
 
             int i = 0;
@@ -45,9 +45,10 @@ public class GreedyStrategy implements AlgoStrategy {
                     int requiredLFNs = Math.min(source.getCommonLFNNo(), Math.abs(destinations.get(i).getCommonLFNNo() - threshold));
 
                     /**/
-                    Operation ops = new Operation(null, null, 0.0, 0);
-                    System.out.println(ops);
-                    opsList.add(ops);
+                    List<Operation> bestOPS = source.getOPS(destinations.get(i), distances, requiredLFNs, true, 1, 8, 1);
+                    opsList.addAll(bestOPS);
+
+                    source.transferLFNs(destinations.get(i), bestOPS);
 
                     /**/
                     if (source.getCommonLFNNo() == 0) {
@@ -60,7 +61,6 @@ public class GreedyStrategy implements AlgoStrategy {
                     }
                 }
             }
-
         }
 
         return opsList;
